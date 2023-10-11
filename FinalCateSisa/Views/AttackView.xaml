@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="FinalCateSisa.Views.AttackView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"   
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <!-- 0 0-->
+            <Border Grid.Row="0" Grid.Column="0">
+                <Image Source="{Binding SelectedImage}"/>
+            </Border>
+
+            <!-- 1 0-->
+            <Image Grid.Row="1" Grid.Column="0" Source="{Binding ModelPredictions}"/>
+
+            <!-- 0 1-->
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="{Binding PertubedImage}"/>
+
+                <Image Grid.Column="1" Source="{Binding AttackedPredictions}"/>
+            </Grid>
+
+            <!-- 1 1-->
+            <Grid>
+                <Image Source="{Binding Noise}"/>
+            </Grid>
+
+        </Grid>
+
+
+        <md:Card Visibility="{Binding ShowFGSMPanel}" Grid.Row="1" HorizontalAlignment="Center" Width="200" VerticalAlignment="Center">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Rectangle Grid.Row="0" Grid.ColumnSpan="2" Fill="Indigo" />
+                <TextBlock Foreground="White" Text="FGSM Attack Panel" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <md:Badged Margin="5" Badge="{Binding Epsilon}" Grid.Row="1" Grid.Column="0">
+                    <md:Chip Margin="0"  Content="Eps Value" Style="{StaticResource MaterialDesignOutlineChip}"/>
+                </md:Badged>
+                <Slider x:Name="slider" Grid.Row="1" Grid.Column="1" Maximum="255" Minimum="0" Value="{Binding Epsilon, Mode=TwoWay}" Margin="8">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="ValueChanged">
+                            <prism:InvokeCommandAction Command="{Binding SliderValueCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Slider>
+                <Button Margin="10" HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2" 
+                            Style="{StaticResource MaterialDesignFloatingActionLightButton}" Command="{Binding FGSMCommand}"
+                            CommandParameter="{Binding Value,ElementName=slider}">
+                    <md:PackIcon Kind="Ammunition" Height="20" Width="20" />
+                </Button>
+            </Grid>
+        </md:Card>
+    </Grid>
+</UserControl>
